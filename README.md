@@ -183,7 +183,7 @@ The first route is the route the user will be redirected to once the two-factor 
  ```php
  /**
   * Provider specific two-factor authentication logic. In the case of MessageBird
-  * we just want to send an authentication token via SMS.
+  * we just want to send an authentication token via SMS or TTS.
   *
   * @param  \App\Models\User $user
   * @return mixed
@@ -192,9 +192,9 @@ The first route is the route the user will be redirected to once the two-factor 
  {
      // Custom, provider dependend logic for sending an authentication token
      // to the user. In the case of MessageBird Verify this could simply be
-     // resolve(TwoFactorProvider::class)->sendSMSToken($this->user)
+     // resolve(TwoFactorProvider::class)->sendToken($this->user)
      // Here we assume this function is called from a queue'd job
-     dispatch(new SendSMSToken($user));
+     dispatch(new SendToken($user));
  }
  ```
  You can discard the third function if you do not want to send a two-factor authentication token automatically after a successful login attempt. Instead, you might want the user to instantiate this process from the form him/herself. In that case you would have to add the required route and controller method to trigger this function yourself. The best place for this would be the `TwoFactorAuthController` to be discussed next.

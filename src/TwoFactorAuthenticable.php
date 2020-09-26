@@ -12,11 +12,31 @@ trait TwoFactorAuthenticable
      *
      * Override in your User model to suit your application.
      *
-     * @return string
+     * @return array
      */
-    public function getMobile()
+    public function getPhoneNumber($obfuscate = false): array
     {
-        return $this->mobile;
+
+        $phoneNumber = $this->mobile;
+        $fallback = false;
+
+        // fallback cases will receive TTS
+
+        if (is_null($phoneNumber) || trim($phoneNumber) == '') {
+            $phoneNumber = $this->phonenumber;
+            $fallback = true;
+        }
+
+        if ($obfuscate) {
+            $phoneNumber = substr($phoneNumber, 0, 3) . preg_replace("/./",
+                    "*",
+                    substr($phoneNumber, 4, strlen($phoneNumber) - 6)) . substr($phoneNumber, -3, 3);
+        }
+        return [
+            'phoneNumber' => $phoneNumber,
+            'fallback'    => $fallback
+        ];
+
     }
 
     /**

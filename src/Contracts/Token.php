@@ -2,7 +2,7 @@
 
 namespace MichaelDzjap\TwoFactorAuth\Contracts;
 
-interface SMSToken
+interface Token
 {
     /**
      * Send a user a two-factor authentication token via SMS.
@@ -11,5 +11,5 @@ interface SMSToken
      * @param null $otherParams
      * @return void
      */
-    public function sendSMSToken($user, $otherParams): void;
+    public function sendToken($user, $otherParams): void;
 }

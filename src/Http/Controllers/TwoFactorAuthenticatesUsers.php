@@ -10,7 +10,7 @@ use MichaelDzjap\TwoFactorAuth\Events\TwoFactorAuthenticated;
 use MichaelDzjap\TwoFactorAuth\Exceptions\TokenAlreadyProcessedException;
 use MichaelDzjap\TwoFactorAuth\Exceptions\TokenExpiredException;
 use MichaelDzjap\TwoFactorAuth\Exceptions\TokenInvalidException;
-use MichaelDzjap\TwoFactorAuth\Http\Requests\VerifySMSToken;
+use MichaelDzjap\TwoFactorAuth\Http\Requests\VerifyToken;
 
 trait TwoFactorAuthenticatesUsers
 {
@@ -29,10 +29,10 @@ trait TwoFactorAuthenticatesUsers
     /**
      * Handle a SMS token verification request to the application.
      *
-     * @param  \MichaelDzjap\TwoFactorAuth\Http\Requests\VerifySMSToken  $request
+     * @param  \MichaelDzjap\TwoFactorAuth\Http\Requests\VerifyToken  $request
      * @return \Illuminate\Http\Response
      */
-    public function verifyToken(VerifySMSToken $request)
+    public function verifyToken(VerifyToken $request)
     {
         // If the class is using the ThrottlesTwoFactorAuths trait, we can automatically
         // throttle the two-factor authentication attempts for this application.

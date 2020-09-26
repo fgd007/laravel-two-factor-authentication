@@ -2,10 +2,10 @@
 
 namespace MichaelDzjap\TwoFactorAuth\Providers;
 
-use MichaelDzjap\TwoFactorAuth\Contracts\SMSToken;
+use MichaelDzjap\TwoFactorAuth\Contracts\Token;
 use MichaelDzjap\TwoFactorAuth\Contracts\TwoFactorProvider;
 
-class NullProvider extends BaseProvider implements TwoFactorProvider, SMSToken
+class NullProvider extends BaseProvider implements TwoFactorProvider, Token
 {
     /**
      * {@inheritdoc}
@@ -34,7 +34,7 @@ class NullProvider extends BaseProvider implements TwoFactorProvider, SMSToken
     /**
      * {@inheritdoc}
      */
-    public function sendSMSToken($user, $otherParams): void
+    public function sendToken($user, $otherParams): void
     {
         //
     }

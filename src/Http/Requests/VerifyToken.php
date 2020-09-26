@@ -4,7 +4,7 @@ namespace MichaelDzjap\TwoFactorAuth\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerifySMSToken extends FormRequest
+class VerifyToken extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -6,13 +6,13 @@ use Exception;
 use MessageBird\Client;
 use MessageBird\Exceptions\RequestException;
 use MessageBird\Objects\Verify;
-use MichaelDzjap\TwoFactorAuth\Contracts\SMSToken;
+use MichaelDzjap\TwoFactorAuth\Contracts\Token;
 use MichaelDzjap\TwoFactorAuth\Contracts\TwoFactorProvider;
 use MichaelDzjap\TwoFactorAuth\Exceptions\TokenAlreadyProcessedException;
 use MichaelDzjap\TwoFactorAuth\Exceptions\TokenExpiredException;
 use MichaelDzjap\TwoFactorAuth\Exceptions\TokenInvalidException;
 
-class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSToken
+class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, Token
 {
     /**
      * MessageBird client instance.
@@ -107,15 +107,15 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
      * @return void
      * @throws Exception  $exception
      */
-    public function sendSMSToken($user, $otherParams): void
+    public function sendToken($user, $otherParams): void
     {
 
+        $phoneNumber = $user->getPhoneNumber();
         $verify = new Verify;
-        $verify->recipient = $user->getMobile();
+        $verify->recipient = $phoneNumber['phoneNumber'];
 
-        $userOptions = ['type' => 'sms', 'language' => $user->getLocale() != 'nl' ? 'en-gb' : 'nl-nl'];
-        if (is_null($verify->recipient)) {
-            $verify->recipient = $user->getPhonenumber();
+        $userOptions = ['type' => 'sms'];
+        if ($phoneNumber['fallback']) {
             $userOptions['type'] = 'tts';
         }
 
