@@ -113,7 +113,7 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
         $verify = new Verify;
         $verify->recipient = $user->getMobile();
 
-        $userOptions = ['type' => 'sms', 'language' => $user->getLocale() != 'nl' ? 'en' : 'nl'];
+        $userOptions = ['type' => 'sms', 'language' => $user->getLocale() != 'nl' ? 'en-gb' : 'nl-nl'];
         if (is_null($verify->recipient)) {
             $verify->recipient = $user->getPhonenumber();
             $userOptions['type'] = 'tts';

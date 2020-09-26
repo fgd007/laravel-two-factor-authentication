@@ -14,7 +14,7 @@ trait TwoFactorAuthenticable
      *
      * @return string
      */
-    public function getMobile(): string
+    public function getMobile()
     {
         return $this->mobile;
     }
@@ -26,15 +26,15 @@ trait TwoFactorAuthenticable
      */
     public function twoFactorAuth(): HasOne
     {
-        return $this->hasOne(
-            \MichaelDzjap\TwoFactorAuth\Models\TwoFactorAuth::class, 'user_id', $this->getKeyName()
-        );
+        return $this->hasOne(\MichaelDzjap\TwoFactorAuth\Models\TwoFactorAuth::class,
+            'user_id',
+            $this->getKeyName());
     }
 
     /**
      * Set the two-factor auth id.
      *
-     * @param  string  $id
+     * @param string $id
      * @return void
      */
     public function setTwoFactorAuthId(string $id): void
@@ -63,7 +63,7 @@ trait TwoFactorAuthenticable
     /**
      * Create or update a two-factor authentication record with the given id.
      *
-     * @param  string  $id
+     * @param string $id
      * @return void
      */
     private function upsertTwoFactorAuthId(string $id): void
@@ -71,7 +71,7 @@ trait TwoFactorAuthenticable
         DB::transaction(function () use ($id) {
             $attributes = ['id' => $id];
 
-            if (! $this->twoFactorAuth()->exists()) {
+            if ( ! $this->twoFactorAuth()->exists()) {
                 $this->twoFactorAuth()->create($attributes);
             } else {
                 $this->twoFactorAuth->update($attributes);
