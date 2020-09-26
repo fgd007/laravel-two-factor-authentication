@@ -109,10 +109,7 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
      */
     public function sendSMSToken($user): void
     {
-        if ( ! $user->getMobile()) {
-            throw new Exception("No mobile phone number found for user {$user->id}.");
-        }
-
+     
         $verify = new Verify;
         $verify->recipient = $user->getMobile();
         $method = ['type' => 'sms'];
