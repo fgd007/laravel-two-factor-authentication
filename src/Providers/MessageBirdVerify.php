@@ -107,18 +107,19 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
      * @return void
      * @throws Exception  $exception
      */
-    public function sendSMSToken($user): void
+    public function sendSMSToken($user, $otherParams): void
     {
-     
+
         $verify = new Verify;
         $verify->recipient = $user->getMobile();
-        $method = ['type' => 'sms'];
+
+        $userOptions = ['type' => 'sms', 'locale' => $user->getLocale()];
         if (is_null($verify->recipient)) {
             $verify->recipient = $user->getPhonenumber();
-            $method = ['type' => 'tts'];
+            $userOptions['type'] = 'tts';
         }
 
-        $options = array_merge(config('twofactor-auth.providers.messagebird.options'), $method);
+        $options = array_merge(config('twofactor-auth.providers.messagebird.options'), $userOptions, $otherParams);
 
         $result = $this->client->verify->create($verify,
             $options);
