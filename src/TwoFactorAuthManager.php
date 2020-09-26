@@ -29,7 +29,9 @@ class TwoFactorAuthManager extends Manager
     protected function createMessageBirdDriver(): TwoFactorProvider
     {
         return new MessageBirdVerify(
-            new Client(app()['config']['twofactor-auth.providers.messagebird.key'])
+
+            new Client($this->config['twofactor-auth.providers.messagebird.key'])
+
         );
     }
 
@@ -50,7 +52,9 @@ class TwoFactorAuthManager extends Manager
      */
     public function getDefaultDriver(): string
     {
-        return app()['config']['twofactor-auth.default'];
+
+        return $this->config['twofactor-auth.default'];
+
     }
 
     /**
@@ -61,6 +65,7 @@ class TwoFactorAuthManager extends Manager
      */
     public function setDefaultDriver(string $name): void
     {
-        app()['config']['twofactor-auth.default'] = $name;
+        $this->config['twofactor-auth.default'] = $name;
+
     }
 }
