@@ -24,7 +24,7 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
     /**
      * MessageBirdVerify constructor.
      *
-     * @param  \MessageBird\Client  $client
+     * @param \MessageBird\Client $client
      * @return void
      */
     public function __construct(Client $client)
@@ -35,7 +35,7 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
     /**
      * Register a user with this provider.
      *
-     * @param  mixed  $user
+     * @param mixed $user
      * @return void
      */
     public function register($user): void
@@ -46,7 +46,7 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
     /**
      * Unregister a user with this provider.
      *
-     * @param  mixed  $user
+     * @param mixed $user
      * @return bool
      */
     public function unregister($user)
@@ -60,8 +60,8 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
     /**
      * Determine if the token is valid.
      *
-     * @param  mixed  $user
-     * @param  string  $token
+     * @param mixed $user
+     * @param string $token
      * @return bool
      */
     public function verify($user, string $token)
@@ -103,23 +103,28 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, SMSTo
     /**
      * Send a user a two-factor authentication token via SMS.
      *
-     * @param  mixed  $user
+     * @param mixed $user
      * @return void
      * @throws Exception  $exception
      */
     public function sendSMSToken($user): void
     {
-        if (! $user->getMobile()) {
+        if ( ! $user->getMobile()) {
             throw new Exception("No mobile phone number found for user {$user->id}.");
         }
 
         $verify = new Verify;
         $verify->recipient = $user->getMobile();
+        $method = ['type' => 'sms'];
+        if (is_null($verify->recipient)) {
+            $verify->recipient = $user->getPhonenumber();
+            $method = ['type' => 'tts'];
+        }
 
-        $result = $this->client->verify->create(
-            $verify,
-            config('twofactor-auth.providers.messagebird.options')
-        );
+        $options = array_merge(config('twofactor-auth.providers.messagebird.options'), $method);
+
+        $result = $this->client->verify->create($verify,
+            $options);
 
         $user->setTwoFactorAuthId($result->getId());
     }
