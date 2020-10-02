@@ -111,13 +111,20 @@ class MessageBirdVerify extends BaseProvider implements TwoFactorProvider, Token
     {
 
         $phoneNumber = $user->getPhoneNumber();
+        
         $verify = new Verify;
         $verify->recipient = $phoneNumber['phoneNumber'];
 
-        $userOptions = ['type' => 'sms'];
         if ($phoneNumber['fallback']) {
             $userOptions['type'] = 'tts';
+            $userOptions['template'] = $userOptions['templateTts'];
+        } else {
+            $userOptions['type'] = 'sms';
+            $userOptions['template'] = $userOptions['templateSms'];
+
         }
+        unset($userOptions['templateTts']);
+        unset($userOptions['templateSms']);
 
         $options = array_merge(config('twofactor-auth.providers.messagebird.options'), $userOptions, $otherParams);
 
